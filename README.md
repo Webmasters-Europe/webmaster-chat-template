@@ -4,7 +4,7 @@ Template für die Einsendeaufgabe "Webmaster-Chat" der Class "JavaScript Backend
 </p>
 
 ## Webmaster-Chat
-*Webmaster-Chat* ist eine Echtzeit-Applikation, bei der sich Nutzer registrieren und anschließend miteinander Nachrichten austauschen können. Dieses Template ist der Ausgangspunkt, von dem du in die Einsendeaufgabe starten kannst. Tobe dich aus und setzte deiner Kreativität keine Grenzen.
+*Webmaster-Chat* ist eine Echtzeit-Applikation, bei der sich Nutzer registrieren und anschließend miteinander Nachrichten austauschen können. Dieses Template ist der Ausgangspunkt, von dem aus du in die Einsendeaufgabe starten kannst. Hier kannst du dich austoben, deiner Kreativität sind keine Grenzen gesetzt.
 
 ## Demo
 
