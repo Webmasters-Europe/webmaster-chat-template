@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script
+			src="https://cdn.socket.io/4.5.4/socket.io.min.js"
+			integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="/javascripts/helper/helper.js" defer></script>
+		<script src="/javascripts/socket.js" defer></script>
+		<script src="/javascripts/index.js" defer></script>
+		<title>Chat</title>
+		<script>
+			const USER_ID = '<%= userId %>';
+            const USERNAME = '<%= username %>';
+			const SERVER_IP = '<%= serverIp %>';
+			const ALL_CHAT_ID = '<%= allChatId %>';
+		</script>
+	</head>
+	<body>
+	    <!-- Start Chat -->
+		<div class="flex h-screen antialiased text-gray-800">
+			<div class="flex flex-row h-full w-full overflow-x-hidden">
+				<div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
+					<div class="flex flex-row items-center justify-center h-12 w-full">
+						<div class="font-bold text-2xl">Webmasterchat</div>
+					</div>
+					<!-- TODO: Search -->
+
+                    <button
+                        id="enable-create-group"
+                        type="button"
+                        class="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                    Create group
+                    </button>
+                    <div id="create-group-ui">
+                        <div class="mt-4">
+                            <input
+                                type="text"
+                                name="search"
+                                id="group-name-input"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                placeholder="Group name"
+                            />
+                        </div>
+
+                        <div class="mt-4">
+                            <input
+                                type="text"
+                                name="search"
+                                id="search-user-input-group"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                placeholder="Search for users"
+                            />
+                        </div>
+
+                        <div class="text-xs my-2 font-bold text-slate-400">Create Group with:</div>
+
+                        <div class="divide-y divide-gray-200 overflow-y-auto">
+                            <div
+                                id="search-group-card-template"
+                                class="relative flex items-start px-2 py-1">
+                                <div class="min-w-0 flex-1 text-sm">
+                                    <label for="person-1" class="select-none font-medium text-gray-700"
+                                        ></label
+                                    >
+                                </div>
+                                <div class="ml-3 flex h-5 items-center">
+                                    <input
+                                        id="person-1"
+                                        name="person-1"
+                                        type="checkbox"
+                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            id="create-group"
+                            type="button"
+                            class="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                            Create group
+                        </button>
+                    </div>
+
+                    <div id="start-chat-box">
+                        <div class="text-xs my-2 font-bold text-slate-400">Start Chat with:</div>
+                        <input
+                            type="text"
+                            name="search"
+                            id="search-user-input"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Search for users"
+                        />
+                        <div
+                            id="search-card-template"
+                            class="flex flex-col space-y-1 -mx-2 overflow-y-auto">
+                            <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                                <div
+                                    id="search-card-text"
+                                    class="ml-2 text-sm font-semibold"></div>
+                            </button>
+                        </div>
+                    </div>
+
+					<div class="flex flex-col mt-8">
+						<div class="flex flex-row items-center justify-between text-xs">
+							<span class="font-bold">Active Conversations</span>
+							<span
+                                id="active-conversation-counter"
+                                class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
+								>0</span
+							>
+						</div>
+                        <div
+                            id="conversation-template"
+                            class="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
+                                <a
+                                    href=""
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                    >
+                                    <div
+                                        id="conversation-card-letter"
+                                        class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
+                                    >
+                                    </div>
+                                    <div
+                                        id="conversation-card-name"
+                                        class="ml-2 text-sm font-semibold"></div>
+                                    <div
+                                        id="new-message-indicator"
+                                        class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-3 w-3 rounded-full leading-none"
+                                    ></div>
+                                </a>
+                            </div>
+					</div>
+
+                    <button
+                        id="logout-button"
+                        type="button"
+                        class="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium   text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-auto justify-center"
+                        >
+                        Logout
+                    </button>
+				</div>
+
+				<div class="flex flex-col flex-auto h-full p-6">
+					<div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full">
+						<div
+							class="bg-white lg:flex lg:items-center lg:justify-between p-4 border border-slate-200 rounded-t-lg"
+						>
+							<div class="min-w-0 flex-1">
+								<h2
+                                    id="conversation-name"
+									class="text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+								>
+                                Select a conversation
+								</h2>
+								<div
+                                id="conversation-participants"
+                                class="mt-1 flex flex-col text-sm text-gray-500">
+								</div>
+							</div>
+							<div
+                            id="leave-conversation"
+                            class="mt-5 flex lg:mt-0 lg:ml-4">
+								<span class="hidden sm:block">
+									<a
+										class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        href=""
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke-width="1.5"
+											stroke="currentColor"
+											class="-ml-1 mr-2 h-5 w-5 text-gray-500"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+											/>
+										</svg>
+										Leave group
+									</a>
+								</span>
+							</div>
+						</div>
+						<div
+                        class="flex flex-col h-full overflow-x-auto mb-4 p-4">
+							<div class="flex flex-col h-full">
+								<div class="grid grid-cols-12 gap-y-2">
+									<div
+                                    id="message-me-template"
+                                    class="col-start-6 col-end-13 p-3 rounded-lg">
+										<div class="flex items-center justify-start flex-row-reverse">
+											<div
+												class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+											>
+												<div
+                                                    id="message-text"
+                                                >
+													Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+												</div>
+												<div
+													class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500 whitespace-nowrap"
+                                                    id="message-time"
+												>
+													Seen
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div
+                                    id="message-other-template"
+                                    class="col-start-1 col-end-8 p-3 rounded-lg">
+										<div class="flex flex-row items-center">
+											<div
+												class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+											>
+												<!-- Name in indigo -->
+												<div
+                                                    class="text-indigo-500 font-semibold"
+                                                    id="message-sender"
+                                                >Alexandra</div>
+												<div
+                                                    id="message-text"
+                                                >
+													Lorem ipsum dolor sit amet consectetur adipisicing elit.
+													Perspiciatis, in.
+												</div>
+                                                <div
+													class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500"
+                                                    id="message-time"
+												>
+													Seen
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div
+                                    id="information-template"
+                                    class="col-start-1 col-end-13">
+										<div class="flex flex-row justify-center items-center">
+											<div
+                                                id="information-text"
+												class="bg-white rounded-lg p-3 text-center text-base text-slate-400"
+											>
+												Peter joined the channel
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div
+							class="flex flex-row items-center rounded-b-xl border border-slate-200 bg-white w-full space-x-4 p-4"
+						>
+							<input
+                                id="message-input"
+								type="text"
+								class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300"
+							/>
+
+							<a
+                                href=""
+                                id="send-message"
+								class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-2"
+							>
+								<span class="mr-2">
+									<svg
+										class="w-5 h-5 transform rotate-45 -mt-px"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+										></path>
+									</svg>
+								</span>
+								<span>Send</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
