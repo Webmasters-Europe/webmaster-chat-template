@@ -10,6 +10,10 @@ Template für die Einsendeaufgabe "Webmaster-Chat" der Class "JavaScript Backend
 
 Die Frontend Dateien befinden sich im Ordner `public` und `views`. Diese sind Template Dateien und clientseitige JavaScript Dateien. Du kannst diese Dateien beliebig verändern oder auch gar nicht verwenden. Sehe diese Dateien als Hilfestellung, um dir den Einstieg in die Einsendeaufgabe zu erleichtern. Sollten diese Dateien zu vielen Unklarheiten führen, empfehlen wir dir, diese zu ignorieren und deine eigene Lösung zu entwickeln.
 
+### weitere Hilfestellungen
+
+Da dies eine sehr umfangreiche Aufgabe ist, sollst du noch ein paar Hilfestellungen erhalten. Ich habe dir Grafiken zum Aufbau dieser Aufgabe zusammengefasst. Diese zeigen eine mögliche Implementierung, es gibt durchaus weitere Implementierungen und eine Kopie dieser Struktur ist nicht verpflichtend oder gar notwendig, um die Aufgabe zu erfüllen. Diese sollen dir nur als optionale Hilfestellung dienen, sodass du diese Ressourcen also vollständig ignorieren kannst. Jedoch rate ich dir, sie zu beachten, da du durch sie nützliche Hilfestellungen zur Implementierung erhältst. Du findest diese im Ordner `hilfestellung`.
+
 ## Demo
 
 Eine Demo der Einsendeaufgabe findet sich unter: <a href="https://chat.webmasters.dev" target="_blank">chat.webmasters.dev</a>
