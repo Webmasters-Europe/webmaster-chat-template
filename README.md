@@ -16,4 +16,4 @@ Da dies eine sehr umfangreiche Aufgabe ist, sollst du noch ein paar Hilfestellun
 
 ## Demo
 
-Eine Demo der Einsendeaufgabe findet sich unter: <a href="https://chat.webmasters.dev" target="_blank">chat.webmasters.dev</a>
+Eine Demo der Einsendeaufgabe findet sich unter: <a href="https://chat.webmasters-akademie.dev" target="_blank">chat.webmasters-akademie.dev</a>
